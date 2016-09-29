@@ -1,0 +1,72 @@
+<html>
+<head>
+  <script src ="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+</head>
+<body>
+
+<div id="fb-root"></div>
+<script>
+    var appId = '1110292869047627';
+    var siteRoot = '';
+
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : appId,
+      channelURL : '///channel.html', // Channel File
+      status     : true,
+      cookie     : true,
+      oauth      : true,
+      xfbml      : true
+    });
+    $(document).trigger('fbload');
+  };
+
+
+  (function(d){
+     var js, id = 'facebook-jssdk'; if (d.getElementById(id)) {return;}
+     js = d.createElement('script'); js.id = id; js.async = true;
+     js.src = "http://connect.facebook.net/en_US/all.js#xfbml=1&appId=" + appId;
+     d.getElementsByTagName('head')[0].appendChild(js);
+   }(document));
+
+
+
+   $(document).on(
+    'fbload',  //  <---- HERE'S OUR CUSTOM EVENT BEING LISTENED FOR
+    function(){
+        //some code that requires the FB object
+        //such as...
+        FB.getLoginStatus(function(res){
+            if( res.status == "connected" ){
+                FB.api('/me', function(fbUser) {
+                    alert(fbUser.name  + " "  + fbUser.email);
+                });
+            }
+        });
+
+    }
+);
+    
+
+
+        
+
+function fbLogout() {
+        FB.logout(function (response) {
+            //Do what ever you want here when logged out like reloading the page
+            window.location.reload();
+        });
+    }
+
+
+</script>
+
+
+<div class="fb-login-button" data-scope="email" data-show-faces="true" data-width="200" data-max-rows="1">Facebook Signup</div><br>
+    
+<button><span id="fbLogout" onclick="fbLogout()"><a class="fb_button fb_button_medium"><span class="fb_button_text">Logout</span></a></span></button>
+    
+
+</body>
+</html>
